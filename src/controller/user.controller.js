@@ -21,6 +21,42 @@ class UserController {
     }
   };
 
+  getAllByRole = async (req, resp) => {
+    try {
+      const users = await userServices.getAllByRole(req.params?.role);
+      resp.status(200);
+
+      if (!esIsEmpty(users)) {
+        resp.send(respFormat(users, `${users?.length} users found`, true));
+      } else {
+        resp.status(202);
+        resp.send(respFormat(null, ` users not found`, true));
+      }
+    } catch (error) {
+      resp.status(202);
+
+      resp.send(respFormat(null, ` users not found`, true));
+    }
+  };
+
+  getAllByQuery = async (req, resp) => {
+    try {
+      const users = await userServices.getAllByQuery(req.query);
+      resp.status(200);
+
+      if (!esIsEmpty(users)) {
+        resp.send(respFormat(users, `${users?.length} users found`, true));
+      } else {
+        resp.status(202);
+        resp.send(respFormat(null, ` users not found`, true));
+      }
+    } catch (error) {
+      resp.status(202);
+
+      resp.send(respFormat(null, ` users not found`, true));
+    }
+  };
+
   getOne = async (req, resp) => {
     const user = await userServices.getOne(req?.params?.id);
     try {
@@ -49,16 +85,19 @@ class UserController {
       resp.send(respFormat(null, "users Update failed", false));
     }
   };
+
   updateOne = async (req, resp) => {
     try {
-      const user = await userServices.updateOne(req.body);
+      const user = await userServices.userUpdate(req.body);
       resp.status(200);
 
       if (!esIsEmpty(user)) {
-        resp.send(respFormat(user, "user Updated successfully", true));
+        resp.send(respFormat(user, "User Updated successfully", true));
+      } else {
+        resp.send(respFormat(user, "User Updated Failed", false));
       }
     } catch (error) {
-      resp.send(respFormat(null, "users Update failed", false));
+      resp.send(respFormat(null, "User Update failed", false));
     }
   };
 

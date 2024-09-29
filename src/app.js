@@ -4,7 +4,7 @@ const routers = require("./router");
 const cookieParser = require("cookie-parser");
 class App {
   app = undefined;
-  port = process.env.PORT | 3051;
+  port = process.env.PORT | 3052;
   constructor() {
     this.app = express();
     this.initMiddleware();

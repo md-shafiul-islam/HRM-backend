@@ -3,7 +3,6 @@ const taskController = require("../controller/task.controller");
 
 
 const taskRouter = express.Router();
-
 taskRouter.get("/", taskController.getAll);
 taskRouter.get("/query", taskController.getAllByQuery);
 taskRouter.get("/:id", taskController.getOne);

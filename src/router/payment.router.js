@@ -1,16 +1,16 @@
 const express = require("express");
-const taskController = require("../controller/task.controller");
+const paymentController = require("../controller/payment.controller");
 
 
-const taskRouter = express.Router();
+const paymentRouter = express.Router();
 
-taskRouter.get("/", taskController.getAll);
-taskRouter.get("/query", taskController.getAllByQuery);
-taskRouter.get("/:id", taskController.getOne);
-taskRouter.post("/", taskController.add);
-taskRouter.post("/update", taskController.updateOne);
+paymentRouter.get("/", paymentController.getAll);
+paymentRouter.get("/query", paymentController.getAllByQuery);
+paymentRouter.get("/:id", paymentController.getOne);
+paymentRouter.post("/", paymentController.add);
+paymentRouter.post("/update", paymentController.updateOne);
 
-taskRouter.put("/", taskController.updateOne);
-taskRouter.delete("/:id", taskController.deleteOne);
+paymentRouter.put("/", paymentController.updateOne);
+paymentRouter.delete("/:id", paymentController.deleteOne);
 
-module.exports = taskRouter;
+module.exports = paymentRouter;

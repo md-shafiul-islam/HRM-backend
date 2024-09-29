@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { dbClient } = require("../database/dbClient");
-const { esIsEmpty } = require("../utils/esHelper");
+const { esIsEmpty } = require("../../utils/esHelper");
 
 class TaskServices {
   getAll = async () => {
@@ -53,7 +53,6 @@ class TaskServices {
 
   addOne = async (task) => {
     let taskResult = null;
-
     try {
       const collection = dbClient.db("hr_app").collection("task");
 

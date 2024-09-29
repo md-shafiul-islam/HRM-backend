@@ -3,6 +3,7 @@ const respFormat = require("../../utils/response/respFormat");
 const taskServices = require("../services/task.services");
 
 class TaskController {
+
   getAll = async (req, resp) => {
     try {
       const tasks = await taskServices.getAll();
