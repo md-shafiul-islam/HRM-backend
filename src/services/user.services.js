@@ -75,6 +75,21 @@ class UserServices {
     }
   };
 
+  getByUserName = async (email) => {
+    let respUser = null;
+    try {
+      // Get the database and collection on which to run the operation
+      const database = dbClient.db("hr_app");
+      const collection = database.collection("user");
+
+      respUser = await collection.findOne({ email });
+    } catch (error) {
+      console.log("User By User Name Error, ", error);
+    } finally {
+      return respUser;
+    }
+  };
+
   addOne = async (user) => {
     let userResult = null;
 

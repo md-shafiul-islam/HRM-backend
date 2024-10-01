@@ -1,15 +1,19 @@
 const express = require("express");
 const taskController = require("../controller/task.controller");
-
+const esMiddleware = require("../middleware/middleware");
 
 const taskRouter = express.Router();
-taskRouter.get("/", taskController.getAll);
-taskRouter.get("/query", taskController.getAllByQuery);
-taskRouter.get("/:id", taskController.getOne);
-taskRouter.post("/", taskController.add);
-taskRouter.post("/update", taskController.updateOne);
+taskRouter.get("/", esMiddleware.isAuthorize, taskController.getAll);
+taskRouter.get(
+  "/query",
+  esMiddleware.isAuthorize,
+  taskController.getAllByQuery
+);
+taskRouter.get("/:id", esMiddleware.isAuthorize, taskController.getOne);
+taskRouter.post("/", esMiddleware.isAuthorize, taskController.add);
+taskRouter.post("/update", esMiddleware.isAuthorize, taskController.updateOne);
 
-taskRouter.put("/", taskController.updateOne);
-taskRouter.delete("/:id", taskController.deleteOne);
+taskRouter.put("/", esMiddleware.isAuthorize, taskController.updateOne);
+taskRouter.delete("/:id", esMiddleware.isAuthorize, taskController.deleteOne);
 
 module.exports = taskRouter;

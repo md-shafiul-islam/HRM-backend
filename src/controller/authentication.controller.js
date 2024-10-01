@@ -1,19 +1,18 @@
 const { esIsEmpty } = require("../../utils/esHelper");
 const respFormat = require("../../utils/response/respFormat");
 const authenticationServices = require("../services/authentication.services");
+const userServices = require("../services/user.services");
 
 class AuthenticationController {
   createToken = async (req, resp) => {
+    console.log("Creating Auth token ", req.body);
     resp.status(202);
     try {
-      const token = await authenticationServices.createAuthToken(req.body);
+      const user = await userServices.getByUserName(req.body?.userEmail);
+
+      const token = await authenticationServices.createAuthToken(user);
       if (!esIsEmpty(token)) {
-        resp.cookie("token", token, {
-          httpOnly: true,
-          secure: true,
-          sameSite: "none",
-        });
-        resp.send(respFormat(null, "Token created successfully", true));
+        resp.send(respFormat(`Bearer ${token}`, "Token created successfully", true));
       } else {
         resp.send(respFormat(null, "Token created failed", false));
       }

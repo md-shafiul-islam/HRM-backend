@@ -1,8 +1,6 @@
-
 const { esIsEmpty } = require("../../utils/esHelper");
 const respFormat = require("../../utils/response/respFormat");
 const workSheetServices = require("../services/work.sheet.services");
-
 
 class WorkSheetController {
   getAll = async (req, resp) => {
@@ -74,7 +72,10 @@ class WorkSheetController {
 
   add = async (req, resp) => {
     try {
-      const workSheet = await workSheetServices.addOne(req.body);
+      const workSheet = await workSheetServices.addOne(
+        req.body,
+        req.user.email
+      );
       resp.status(200);
       if (!esIsEmpty(workSheet)) {
         resp.send(respFormat(workSheet, "workSheet added  successfully", true));

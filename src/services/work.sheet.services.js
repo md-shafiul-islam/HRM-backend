@@ -1,7 +1,7 @@
 const { ObjectId } = require("mongodb");
 const { dbClient } = require("../database/dbClient");
 const { esIsEmpty } = require("../../utils/esHelper");
-
+const { use } = require("../router/user.router");
 
 class WorkSheetServices {
   getAll = async () => {
@@ -52,12 +52,12 @@ class WorkSheetServices {
     }
   };
 
-  addOne = async (workSheet) => {
+  addOne = async (workSheet, email) => {
     let workSheetResult = null;
 
     try {
       const collection = dbClient.db("hr_app").collection("work_sheet");
-
+      workSheet.userEmail = email;
       workSheet.create = new Date();
       workSheetResult = await collection.insertOne(workSheet);
     } catch (error) {

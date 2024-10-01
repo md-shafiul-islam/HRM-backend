@@ -1,15 +1,36 @@
 const express = require("express");
 const workSheetController = require("../controller/work.sheet.controller");
+const esMiddleware = require("../middleware/middleware");
 
 const workSheetRouter = express.Router();
 
-workSheetRouter.get("/", workSheetController.getAll);
-workSheetRouter.get("/query", workSheetController.getAllByQuery);
-workSheetRouter.get("/:id", workSheetController.getOne);
-workSheetRouter.post("/", workSheetController.add);
-workSheetRouter.post("/update", workSheetController.updateOne);
+workSheetRouter.get("/", esMiddleware.isAuthorize, workSheetController.getAll);
+workSheetRouter.get(
+  "/query",
+  esMiddleware.isAuthorize,
+  workSheetController.getAllByQuery
+);
+workSheetRouter.get(
+  "/:id",
+  esMiddleware.isAuthorize,
+  workSheetController.getOne
+);
+workSheetRouter.post("/", esMiddleware.isAuthorize, workSheetController.add);
+workSheetRouter.post(
+  "/update",
+  esMiddleware.isAuthorize,
+  workSheetController.updateOne
+);
 
-workSheetRouter.put("/", workSheetController.updateOne);
-workSheetRouter.delete("/:id", workSheetController.deleteOne);
+workSheetRouter.put(
+  "/",
+  esMiddleware.isAuthorize,
+  workSheetController.updateOne
+);
+workSheetRouter.delete(
+  "/:id",
+  esMiddleware.isAuthorize,
+  workSheetController.deleteOne
+);
 
 module.exports = workSheetRouter;
