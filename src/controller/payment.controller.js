@@ -76,6 +76,21 @@ class PaymentController {
       resp.send(respFormat(null, "payments Add failed", false));
     }
   };
+
+  createIntent = async (req, resp) => {
+    try {
+      const paymentInt = await paymentServices.createIntent(req.body, req.user);
+
+      resp.status(200);
+
+      if (!esIsEmpty(paymentInt)) {
+        resp.send(respFormat(paymentInt, "payment Intent Created :)", true));
+      }
+    } catch (error) {
+      resp.send(respFormat(null, "Payment Intent create failed", false));
+    }
+  };
+
   updateOne = async (req, resp) => {
     try {
       const payment = await paymentServices.updateOne(req.body);

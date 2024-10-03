@@ -99,6 +99,19 @@ class WorkSheetController {
     }
   };
 
+  onlyUpdate = async (req, resp) => {
+    try {
+      const workSheet = await workSheetServices.onlyUpdate(req.body);
+      resp.status(200);
+
+      if (!esIsEmpty(workSheet)) {
+        resp.send(respFormat(workSheet, "workSheet Updated :)", true));
+      }
+    } catch (error) {
+      resp.send(respFormat(null, "workSheets Update failed", false));
+    }
+  };
+
   deleteOne = async (req, resp) => {
     try {
       const deleteResp = await workSheetServices.deleteOne({

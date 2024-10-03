@@ -91,6 +91,28 @@ class WorkSheetServices {
     }
   };
 
+  onlyUpdate = async (uWorkSheet) => {
+    let updateAc = null;
+    try {
+      const database = dbClient.db("hr_app");
+      const collection = database.collection("work_sheet");
+
+      const filter = { _id: new ObjectId(uWorkSheet.id) };
+
+      const updateDoc = {
+        $set: uWorkSheet,
+      };
+      // Update the first document that matches the filter
+      updateAc = await collection.updateOne(filter, updateDoc);
+    } catch (error) {
+      console.log("workSheet Update ", error);
+    } finally {
+      // Close the connection after the operation completes
+
+      return updateAc;
+    }
+  };
+
   deleteOne = async ({ id, user }) => {
     let resp = null;
     try {

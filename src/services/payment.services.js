@@ -1,6 +1,9 @@
 const { ObjectId } = require("mongodb");
 const { esIsEmpty } = require("../../utils/esHelper");
 const { dbClient } = require("../database/dbClient");
+const { default: Stripe } = require("stripe");
+const userServices = require("./user.services");
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 class PaymentServices {
   getAll = async () => {
@@ -66,6 +69,40 @@ class PaymentServices {
     }
   };
 
+  createIntent = async ({ id, date }, user) => {
+    let paymentInf = undefined;
+
+    try {
+      const employee = await userServices.getOne(id);
+
+      if (esIsEmpty(employee)) {
+        throw new Error("Employee not found by ID");
+      }
+      if (!this.isEligible(id, date)) {
+        throw new Error("Employee salary already paid for this month");
+      }
+
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: employee.salary,
+        currency: "usd",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+
+      paymentInf = {
+        key: paymentIntent.client_secret,
+        employee,
+      };
+    } catch (error) {
+      console.log("Paid Create Intent Error ", error);
+    } finally {
+      // Close the connection after the operation completes
+
+      return paymentInf;
+    }
+  };
+
   updateOne = async (upayment) => {
     let updateAc = null;
     try {
@@ -94,15 +131,35 @@ class PaymentServices {
     let resp = null;
     try {
       const database = dbClient.db("hr_app");
-      const studyDb = database.collection("payment");
+      const payment = database.collection("payment");
 
       const query = { $and: [{ _id: new ObjectId(id) }, { userEmail: user }] };
 
-      resp = await studyDb.deleteOne(query);
+      resp = await payment.deleteOne(query);
     } catch (error) {
       console.log("payment Delete Error ", error);
     } finally {
       return resp;
+    }
+  };
+
+  isEligible = async ({ id, date }) => {
+    let eligible = false;
+    try {
+      const database = dbClient.db("hr_app");
+      const payment = database.collection("payment");
+
+      const query = { $and: [{ user: id }, { date }] };
+
+      const paidRecord = await payment.findOne(query);
+      if (!esIsEmpty(paidRecord)) {
+        eligible = true;
+      }
+    } catch (error) {
+      console.log("payment Delete Error ", error);
+      eligible = false;
+    } finally {
+      return eligible;
     }
   };
 }

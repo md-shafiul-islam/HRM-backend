@@ -101,6 +101,21 @@ class UserController {
     }
   };
 
+  updateOnly= async (req, resp) => {
+    try {
+      const user = await userServices.updateOnly(req.body);
+      resp.status(200);
+
+      if (!esIsEmpty(user)) {
+        resp.send(respFormat(user, "User Updated successfully", true));
+      } else {
+        resp.send(respFormat(user, "User Updated Failed", false));
+      }
+    } catch (error) {
+      resp.send(respFormat(null, "User Update failed", false));
+    }
+  };
+
   deleteOne = async (req, resp) => {
     try {
       const deleteResp = await userServices.deleteOne(req?.params?.id);

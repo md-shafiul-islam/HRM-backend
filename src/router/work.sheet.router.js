@@ -16,6 +16,9 @@ workSheetRouter.get(
   workSheetController.getOne
 );
 workSheetRouter.post("/", esMiddleware.isAuthorize, workSheetController.add);
+
+workSheetRouter.patch("/", esMiddleware.isAuthorize, workSheetController.onlyUpdate);
+
 workSheetRouter.post(
   "/update",
   esMiddleware.isAuthorize,

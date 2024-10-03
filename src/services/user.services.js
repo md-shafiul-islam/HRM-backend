@@ -138,6 +138,31 @@ class UserServices {
     }
   };
 
+  updateOnly = async (uUser) => {
+    console.log("Update ...", uUser);
+
+    let update = null;
+    try {
+      const database = dbClient.db("hr_app");
+      const collection = database.collection("user");
+
+      const { id, ...user } = uUser;
+      const filter = { _id: new ObjectId(id) };
+
+      const updateDoc = {
+        $set: user,
+      };
+      // Update the first document that matches the filter
+      update = await collection.updateOne(filter, updateDoc);
+      console.log("Update User ", update);
+    } catch (error) {
+      console.log("User Update Error, ", error);
+    } finally {
+      // Close the connection after the operation completes
+      return update;
+    }
+  };
+
   deleteOne = async (id) => {
     let resp = null;
     try {
