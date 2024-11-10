@@ -5,7 +5,14 @@ const userServices = require("../services/user.services");
 class UserController {
   getAll = async (req, resp) => {
     try {
-      const users = await userServices.getAll();
+      let users = [];
+
+      if (req.query.status === "all") {
+        users = await userServices.getAll();
+      } else {
+        users = await userServices.getAll({ role: { $ne: "Admin" } });
+      }
+
       resp.status(200);
 
       if (!esIsEmpty(users)) {
@@ -15,6 +22,7 @@ class UserController {
         resp.send(respFormat(null, ` users not found`, true));
       }
     } catch (error) {
+      console.log("Find All User Error, ", error);
       resp.status(202);
 
       resp.send(respFormat(null, ` users not found`, true));
@@ -79,7 +87,9 @@ class UserController {
       resp.status(200);
 
       if (!esIsEmpty(paids)) {
-        resp.send(respFormat(paids, `${paids.length} User Pyament's found`, true));
+        resp.send(
+          respFormat(paids, `${paids.length} User Pyament's found`, true)
+        );
       }
     } catch (error) {
       console.log("Get User Pyament's, Error ", error);

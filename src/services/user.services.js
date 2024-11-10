@@ -3,13 +3,17 @@ const { dbClient } = require("../database/dbClient");
 const { esIsEmpty } = require("../../utils/esHelper");
 
 class UserServices {
-  getAll = async () => {
+  getAll = async (query) => {
     let usersResp = [];
     try {
+      let filter = {};
+      if (!esIsEmpty(query)) {
+        filter = query;
+      }
       const database = dbClient.db("hr_app");
       const collection = database.collection("user");
 
-      const cursor = collection.find();
+      const cursor = collection.find(filter);
       usersResp = await cursor.toArray();
     } finally {
       return usersResp;
@@ -36,19 +40,6 @@ class UserServices {
       const collection = database.collection("user");
 
       const cursor = collection.find(query);
-      usersResp = await cursor.toArray();
-    } finally {
-      return usersResp;
-    }
-  };
-
-  getAll = async () => {
-    let usersResp = [];
-    try {
-      const database = dbClient.db("hr_app");
-      const collection = database.collection("user");
-
-      const cursor = collection.find();
       usersResp = await cursor.toArray();
     } finally {
       return usersResp;
