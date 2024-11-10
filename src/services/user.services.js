@@ -1,7 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { dbClient } = require("../database/dbClient");
 const { esIsEmpty } = require("../../utils/esHelper");
-const e = require("express");
 
 class UserServices {
   getAll = async () => {
@@ -56,8 +55,24 @@ class UserServices {
     }
   };
 
+  getOneAllPaids = async (id) => {
+    let paymentsResp = [];
+    try {
+      const database = dbClient.db("hr_app");
+      const collection = database.collection("payment");
+
+      const cursor = collection.find({ user: id });
+
+      paymentsResp = await cursor.toArray();
+      console.log("User Salary Paid Found By user", paymentsResp);
+    } catch (error) {
+      console.log("Error Salary Paid Found By user", error);
+    } finally {
+      return paymentsResp;
+    }
+  };
+
   getOne = async (id) => {
-    console.log("User Finding using id ", id);
     let respUser = null;
     try {
       // Get the database and collection on which to run the operation
@@ -67,7 +82,6 @@ class UserServices {
       const filter = { _id: new ObjectId(id) };
 
       respUser = await collection.findOne(filter);
-      console.log("User ", respUser);
     } catch (error) {
       // console.log("User By ID Error, ", error);
     } finally {

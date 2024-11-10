@@ -16,6 +16,7 @@ userRouter.get(
   userController.getAllByQuery
 );
 userRouter.get("/:id", esMiddleware.isAuthorize, userController.getOne);
+userRouter.get("/:id/payments", esMiddleware.isAuthorize, userController.getUserAllPayment);
 userRouter.post("/", userController.add);
 userRouter.patch("/", userController.updateOnly);
 userRouter.put("/", esMiddleware.isAuthorize, userController.updateOne);

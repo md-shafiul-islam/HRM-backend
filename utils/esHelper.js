@@ -54,4 +54,14 @@ const esGetNumber = (value) => {
   return num;
 };
 
-module.exports = { esGetNumber, esIsEmpty };
+const esSubText = (text, size = 20) => {
+  if (!esIsEmpty(text)) {
+    if (text.length > size) {
+      text = `${text.substring(0, size)} [...]`;
+    }
+  }
+
+  return text;
+};
+
+module.exports = { esGetNumber, esIsEmpty, esSubText };

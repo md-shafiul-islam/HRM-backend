@@ -73,6 +73,21 @@ class UserController {
     }
   };
 
+  getUserAllPayment = async (req, resp) => {
+    const paids = await userServices.getOneAllPaids(req?.params?.id);
+    try {
+      resp.status(200);
+
+      if (!esIsEmpty(paids)) {
+        resp.send(respFormat(paids, `${paids.length} User Pyament's found`, true));
+      }
+    } catch (error) {
+      console.log("Get User Pyament's, Error ", error);
+      resp.status(202);
+
+      resp.send(respFormat(null, "User Pyament's not found", false));
+    }
+  };
   add = async (req, resp) => {
     try {
       const user = await userServices.addOne(req.body);
@@ -101,7 +116,7 @@ class UserController {
     }
   };
 
-  updateOnly= async (req, resp) => {
+  updateOnly = async (req, resp) => {
     try {
       const user = await userServices.updateOnly(req.body);
       resp.status(200);

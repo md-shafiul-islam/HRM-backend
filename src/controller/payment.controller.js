@@ -10,16 +10,16 @@ class PaymentController {
 
       if (!esIsEmpty(payments)) {
         resp.send(
-          respFormat(payments, `${payments?.length} payments found`, true)
+          respFormat(payments, `${payments?.length} Payments found`, true)
         );
       } else {
         resp.status(202);
-        resp.send(respFormat(null, ` payments not found`, true));
+        resp.send(respFormat(null, `Payments not found`, true));
       }
     } catch (error) {
       resp.status(202);
 
-      resp.send(respFormat(null, ` payments not found`, true));
+      resp.send(respFormat(null, `Payments not found`, true));
     }
   };
 
