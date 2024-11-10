@@ -4,6 +4,7 @@ const workSheetRouter = require("./work.sheet.router");
 const taskRouter = require("./task.router");
 const paymentRouter = require("./payment.router");
 const authenticationRouter = require("./authentication.router");
+const contactUsRouter = require("./contact.us.router");
 
 function routers(app) {
   app.use("/api/users", userRouter);
@@ -11,7 +12,8 @@ function routers(app) {
   app.use("/api/tasks", taskRouter);
   app.use("/api/payments", paymentRouter);
   app.use("/api/auth", authenticationRouter);
-
+  app.use("/api/contact-us", contactUsRouter);
+  
   app.use("/", (req, resp) => {
     resp.send("ok");
   });

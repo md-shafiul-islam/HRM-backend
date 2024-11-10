@@ -128,7 +128,15 @@ class UserController {
 
   updateOnly = async (req, resp) => {
     try {
-      const user = await userServices.updateOnly(req.body);
+      console.log("Update User, Auth ", req.user);
+      console.log("req.body ", req.body);
+      let user = null;
+
+      if (req.user.role !== "Admin") {
+        user = await userServices.updateOnly(req.body);
+      }else{
+        msg = "employee Status "
+      }
       resp.status(200);
 
       if (!esIsEmpty(user)) {
