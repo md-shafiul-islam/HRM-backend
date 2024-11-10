@@ -9,8 +9,10 @@ class ContactUsServices {
       const database = dbClient.db("hr_app");
       const collection = database.collection("contact_us");
 
-      const cursor = collection.find();
+      const cursor = collection.find({});
       contactUsResp = await cursor.toArray();
+
+      console.log("Contact US Get All ", contactUsResp);
     } finally {
       return contactUsResp;
     }
@@ -56,7 +58,6 @@ class ContactUsServices {
     console.log("Contact Us Message Added contactUs, ", contactUs);
 
     try {
-      
       const collection = dbClient.db("hr_app").collection("contact_us");
 
       contactUs.create = new Date();
@@ -81,7 +82,7 @@ class ContactUsServices {
       const filter = { _id: new ObjectId(_id) };
 
       const updateDoc = {
-        $set: contactUs,
+        $set: { isRead: true },
       };
       // Update the first document that matches the filter
       updateAc = await collection.updateOne(filter, updateDoc);

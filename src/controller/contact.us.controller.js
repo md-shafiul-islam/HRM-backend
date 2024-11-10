@@ -10,7 +10,7 @@ class ContactUsController {
 
       if (!esIsEmpty(contactUs)) {
         resp.send(
-          respFormat(contactUs, `${contactUs?.length} contactUs found`, true)
+          respFormat(contactUs, `${contactUs?.length} ContactUs found`, true)
         );
       } else {
         resp.status(202);
@@ -74,7 +74,9 @@ class ContactUsController {
       const contactUs = await contactUsServices.addOne(req.body);
       resp.status(200);
       if (!esIsEmpty(contactUs)) {
-        resp.send(respFormat(contactUs, "Message received  successfully", true));
+        resp.send(
+          respFormat(contactUs, "Message received  successfully", true)
+        );
       } else {
         resp.send(respFormat(contactUs, "contactUs Add  failed", false));
       }
@@ -89,7 +91,7 @@ class ContactUsController {
       resp.status(200);
 
       if (!esIsEmpty(contactUs)) {
-        resp.send(respFormat(contactUs, "contactUs Updated :)", true));
+        resp.send(respFormat(contactUs, "Contact-Us Mark Readed :)", true));
       }
     } catch (error) {
       resp.send(respFormat(null, "contactUs Update failed", false));
