@@ -5,14 +5,15 @@ const userServices = require("../services/user.services");
 
 class AuthenticationController {
   createToken = async (req, resp) => {
-    console.log("Creating Auth token ", req.body);
     resp.status(202);
     try {
       const user = await userServices.getByUserName(req.body?.userEmail);
 
       const token = await authenticationServices.createAuthToken(user);
       if (!esIsEmpty(token)) {
-        resp.send(respFormat(`Bearer ${token}`, "Token created successfully", true));
+        resp.send(
+          respFormat(`Bearer ${token}`, "Token created successfully", true)
+        );
       } else {
         resp.send(respFormat(null, "Token created failed", false));
       }
