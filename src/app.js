@@ -16,7 +16,12 @@ class App {
   };
 
   initMiddleware = () => {
-    const allowedOrigins = new Set(["http://localhost:5173"]);
+    const allowedOrigins = new Set([
+      "https://hrmanagement-17578.web.app",
+      "https://hrmanagement-17578.firebaseapp.com",
+      "http://localhost:5173",
+    ]);
+
     this.app.use(
       cors({
         origin: (origin, callback) => {

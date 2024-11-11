@@ -23,6 +23,22 @@ class ContactUsController {
     }
   };
 
+  getCount = async (req, resp) => {
+    let count = 0,
+      message = "Message count failed",
+      status = false;
+    try {
+      count = await contactUsServices.getCountQuery(req.query?.read);
+      resp.status(200);
+      status = true;
+      message = `Message counted :)`;
+    } catch (error) {
+      resp.status(202);
+      status = false;
+    } finally {
+      resp.send(respFormat(count, message, status));
+    }
+  };
   getAllByQuery = async (req, resp) => {
     try {
       const contactUs = await contactUsServices.getAllByQuery(req.query?.level);

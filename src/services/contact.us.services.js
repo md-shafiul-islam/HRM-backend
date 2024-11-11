@@ -1,6 +1,7 @@
 const { ObjectId } = require("mongodb");
 const { dbClient } = require("../database/dbClient");
 const { esIsEmpty } = require("../../utils/esHelper");
+const utilServices = require("./util.services");
 
 class ContactUsServices {
   getAll = async () => {
@@ -11,13 +12,25 @@ class ContactUsServices {
 
       const cursor = collection.find({});
       contactUsResp = await cursor.toArray();
-
-      console.log("Contact US Get All ", contactUsResp);
     } finally {
       return contactUsResp;
     }
   };
 
+  getCountQuery = async (isRead) => {
+    isRead = utilServices.stin2Bool(isRead);
+
+    let contactUsCount = 0;
+    try {
+      const database = dbClient.db("hr_app");
+      const collection = database.collection("contact_us");
+
+      contactUsCount = await collection.countDocuments({ isRead });
+      console.log("Read Count ", contactUsCount);
+    } finally {
+      return contactUsCount;
+    }
+  };
   getAllByQuery = async (query) => {
     let contactUsResp = [];
     try {

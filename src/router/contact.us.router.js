@@ -10,6 +10,13 @@ contactUsRouter.get(
   esMiddleware.isAuthorize,
   contactUsController.getAllByQuery
 );
+
+contactUsRouter.get(
+  "/count",
+  esMiddleware.isAuthorize,
+  contactUsController.getCount
+);
+
 contactUsRouter.get(
   "/:id",
   esMiddleware.isAuthorize,
